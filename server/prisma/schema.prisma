@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
+
 
 enum Role {
   CANDIDATE
@@ -21,6 +21,13 @@ enum ApplicationStatus {
   REJECTED
 }
 
+enum JobStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  ARCHIVED
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -30,17 +37,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Profile relationship for candidates
   profile      Profile?
-  // Applications submitted by candidates
   applications Application[]
-
-  // Company management for recruiters
-  companyId Int?
-  company   Company? @relation(fields: [companyId], references: [id])
-
-  // Job offers created by recruiters
-  jobOffers JobOffer[]
+  companyId    Int?
+  company      Company?     @relation(fields: [companyId], references: [id])
+  jobOffers    JobOffer[]
 }
 
 model Profile {
@@ -65,20 +66,23 @@ model Company {
 }
 
 model JobOffer {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   title       String
   description String
   location    String?
-  salary      String?
-  published   Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  salaryMin   Int?
+  salaryMax   Int?
+  currency    String?
+  status      JobStatus  @default(DRAFT)
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   companyId   Int
-  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company     Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   authorId    Int
-  author      User     @relation(fields: [authorId], references: [id])
+  author      User       @relation(fields: [authorId], references: [id])
 
   applications Application[]
 }
@@ -94,5 +98,5 @@ model Application {
   jobOfferId  Int
   jobOffer    JobOffer          @relation(fields: [jobOfferId], references: [id], onDelete: Cascade)
 
-  @@unique([candidateId, jobOfferId]) // Prevents candidate from applying to the same job twice
+  @@unique([candidateId, jobOfferId])
 }
