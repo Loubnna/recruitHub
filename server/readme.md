@@ -1,14 +1,17 @@
-# Project Name
+# RectuitHub
 
 
-
-![Project Screenshot or GIF](path/to/screenshot.png)
 
 ## Features
 
-- **Feature 1**: Brief explanation.
-- **Feature 2**: Brief explanation.
-- **Feature 3**: Brief explanation.
+-Company dashboard
+-Resume upload
+-AI resume analysis
+-AI interview quesions generations 
+-Email notification
+-Admin analysis
+-Feedbacks
+
 
 ## Tech Stack
 
@@ -26,5 +29,5 @@ Before getting started, ensure you have installed:
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
-   cd your-repo-name
+   git clone [https://github.com/Loubnna/recruitHub]
+   cd recruitHub
