@@ -1,20 +1,10 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
+import dotenv from "dotenv";
+import app from './app.js';
 
 dotenv.config();
-const app = express();
-app.use(express.jason());
-app.use(cookieParser());
 
-
-
-app.get("/", (req, res) => res.send("welcome to this api!"));
-
-const PORT=process.env.Port || 5000;
-
-
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log("server started on port 5000");
+    console.log(`Server started on port ${PORT}`);
 });

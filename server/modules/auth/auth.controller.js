@@ -1,3 +1,4 @@
+import { resolve } from "dns";
 import * as authService from "./auth.service.js";
 
 export const register = async (req, res) => {
@@ -58,7 +59,7 @@ export const logout = async (req, res) => {
 };
 
 export const me =async(req, res ) => {
-    return req.status(200).json({
+    return resolve.status(200).json({
         user: req.user
     });
 };
