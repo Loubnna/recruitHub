@@ -3,7 +3,7 @@ import prisma from "../config/database.js";
 
 export const authenticate = async (req, res, next) => {
     try {
-        // 1. Get JWT from HTTP-only cookie
+        //  Get JWT from HTTP-only cookie
         const token = req.cookies.token;
 
         if (!token) {
@@ -12,13 +12,13 @@ export const authenticate = async (req, res, next) => {
             });
         }
 
-        // 2. Verify JWT
+        // Verify JWT
         const decoded = jwt.verify(
             token,
             process.env.JWT_SECRET
         );
 
-        // 3. Find the user
+        //  Find the user
         const user = await prisma.user.findUnique({
             where: {
                 id: decoded.userId
@@ -31,17 +31,17 @@ export const authenticate = async (req, res, next) => {
             }
         });
 
-        // 4. Token is valid but user doesn't exist
+        //  Token is valid but user doesn't exist
         if (!user) {
             return res.status(401).json({
                 message: "User not found"
             });
         }
 
-        // 5. Attach authenticated user to request
+        //  Attach authenticated user to request
         req.user = user;
 
-        // 6. Continue to the next middleware/controller
+        //  Continue to the next middleware/controller
         next();
 
     } catch (error) {
@@ -49,4 +49,5 @@ export const authenticate = async (req, res, next) => {
             message: "Invalid or expired token"
         });
     }
+    
 };

@@ -1,6 +1,8 @@
 import express from "express";
 import * as authController from "./auth.controller.js";
 import { authenticate } from "../../middleware/auth.middleware.js";
+import { validate } from "../../middleware/validate.middleware.js";
+import { registerSchema, loginSchema } from "./auth.validation.js";
 
 const router = express.Router();
 router.post(
