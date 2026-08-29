@@ -10,7 +10,7 @@ app.use("/api/v1/auth" , authRoutes);
 
 app.get("/" , (req,res) => {
     res.json({
-        message : "welcome to this api"
+        message : "the recuitHub platforme api"
     });
 });
 app.use(cors({
