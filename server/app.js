@@ -1,12 +1,14 @@
 import express from "express"
 import cookieParser from "cookie-parser"
 import authRoutes from "./modules/auth/auth.routes.js";
+import jobRoutes from "./modules/jobs/job.routes.js";
 import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 //api v1 
 app.use("/api/v1/auth" , authRoutes);
+app.use("/api/v1/jobs", jobRoutes);
 
 app.get("/" , (req,res) => {
     res.json({

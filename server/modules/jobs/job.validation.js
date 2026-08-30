@@ -11,7 +11,12 @@ export const createJobSchema =z.object({
     salaryMin : z.number().int().nonnegative(),
     salaryMax:z.number().int().nonnegative(),
     currency : z.enum(SUPPORTED_CURRENCIES),
-    status : z.enum(["draft", "published", "closed","ARCHIVED"]),
+    status: z.enum([
+    "DRAFT",
+    "PUBLISHED",
+    "CLOSED",
+    "ARCHIVED"
+]).optional(),
     companyId: z.number().int().positive()
 }).refine((data) => data.salaryMax >= data.salaryMin, {
   message: "salaryMax must be greater than or equal to salaryMin",
@@ -25,7 +30,12 @@ export const updateJobSchema = z.object({
   salaryMin: z.number().int().nonnegative().optional(),
   salaryMax: z.number().int().nonnegative().optional(),
   currency: z.enum(SUPPORTED_CURRENCIES).optional(),
-  status: z.enum(["draft", "published", "closed","ARCHIVED"]).optional(),
+  status: z.enum([
+    "DRAFT",
+    "PUBLISHED",
+    "CLOSED",
+    "ARCHIVED"
+]).optional(),
   companyId: z.string().min(1).optional(),
 }).refine(
   (data) =>
