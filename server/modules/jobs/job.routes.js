@@ -17,11 +17,11 @@ router.post("/",
 );
 
 router.get("/",
-    jobController.create
+    jobController.getAll
 );
 
 router.get("/:id",
-    jobController.create
+    jobController.getById
 );
 router.patch("/:id",
      authenticate,

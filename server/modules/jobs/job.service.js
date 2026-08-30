@@ -2,7 +2,7 @@ import prisma from "../../config/database.js";
 import z from "zod";
 
 
-export const createJob = async ({title, description ,location ,salaryMin,salaryMax, currency , companyId}) =>{
+export const createJob = async ({title, description ,location ,salaryMin,salaryMax, currency , companyId,authorId}) =>{
     const newJob = await prisma.jobOffer.create({
         data: {
             title,

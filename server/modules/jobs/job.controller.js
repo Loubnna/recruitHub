@@ -1,5 +1,5 @@
 import * as jobService from "./job.service.js";
-
+import {createJobSchema , updateJobSchema} from "./job.validation.js"
 
 export const create  = async (req, res )=> {
 
@@ -29,7 +29,7 @@ export const getAll =async (req, res) =>{
         return res.status(200).json(jobs);
 
     }catch(error){
-        console.error(errro);
+        console.error(error);
         return res.status(500 ).json({
             message : "Failed to fetch jobs "
 
@@ -39,7 +39,7 @@ export const getAll =async (req, res) =>{
 }
 export const getById =async (req , res ) =>{
     try{
-        const {id} =Number(req.params.id);
+        const id =Number(req.params.id);
         if (!Number.isInteger(id) || id <= 0) {
             return res.status(400).json({
             message: "Invalid job ID"
@@ -52,7 +52,7 @@ export const getById =async (req , res ) =>{
         if (! job) {
             return res.status(404).json({message : "job not found" });
         }
-        return res.status(404).json({
+        return res.status(200).json({
             job
         });
 
