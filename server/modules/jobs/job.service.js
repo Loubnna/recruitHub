@@ -68,9 +68,7 @@ export const updateJob = async (id, data, user) => {
     });
 
     if (!job) {
-        const error = new Error("Job not found");
-        error.statusCode = 404;
-        throw error;
+        const error = new Error("Job not found");        throw error;
     }
 
     // Admin can update any job
