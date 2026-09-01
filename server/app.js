@@ -2,6 +2,7 @@ import express from "express"
 import cookieParser from "cookie-parser"
 import authRoutes from "./modules/auth/auth.routes.js";
 import jobRoutes from "./modules/jobs/job.routes.js";
+import applicationRoutes from "./modules/applications/application.routes.js";
 import cors from "cors";
 const app = express();
 app.use(express.json());

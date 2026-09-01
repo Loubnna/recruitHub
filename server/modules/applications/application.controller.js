@@ -1,5 +1,5 @@
 import * as applicationService from "./application.service.js";
-import { createApplicationSchema, updateApplicationStatusSchema } from "./application.validation.js";
+import { createApplicationSchema ,   updateApplicationStatusSchema} from "./application.validation.js";
 
 export const create = async (req, res) => {
     try {

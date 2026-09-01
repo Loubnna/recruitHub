@@ -3,7 +3,7 @@ import * as applicationController from "./application.controller.js";
 import { authenticate } from "../../middleware/auth.middleware.js";
 import { authorize } from "../../middleware/role.middleware.js";
 import { validate } from "../../middleware/validate.middleware.js";
-import { createApplicationSchema, updateApplicationStatusSchema } from "./application.validation.js";
+import { createApplicationSchema , updateApplicationStatusSchema } from "./application.validation.js";
 
 const router = express.Router();
 
