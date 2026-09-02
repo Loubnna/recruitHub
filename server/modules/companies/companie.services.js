@@ -11,7 +11,19 @@ const companySelect = {
     jobOffers: true
 };
 
-export const createCompany = async ({ name, description, location, website, authorId }) => {
+export const createCompany = async ({ name, description, location, website }, user) => {
+    if (user.role === "RECRUITER") {
+        const existingUser = await prisma.user.findUnique({
+            where: { id: user.id }
+        });
+
+        if (existingUser.companyId !== null) {
+            const error = new Error("You already belong to a company");
+            error.statusCode = 409;
+            throw error;
+        }
+    }
+
     const newCompany = await prisma.company.create({
         data: {
             name,
@@ -24,12 +36,14 @@ export const createCompany = async ({ name, description, location, website, auth
 
     // Link the creating recruiter to this company (Company has no
     // "authorId" field of its own — ownership is modeled through
-    // User.companyId, so the recruiter who creates a company becomes
-    // one of its recruiters).
-    await prisma.user.update({
-        where: { id: authorId },
-        data: { companyId: newCompany.id }
-    });
+    // User.companyId). Admins can create a company without being
+    // tied to it as one of its recruiters.
+    if (user.role === "RECRUITER") {
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { companyId: newCompany.id }
+        });
+    }
 
     return newCompany;
 };
