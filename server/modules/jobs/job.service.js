@@ -33,26 +33,30 @@ export const createJob = async ({title, description ,location ,salaryMin,salaryM
     });
     return newJob;
 }
-export const getAllJobs =async () =>{
-    return await prisma.jobOffer.findMany({
-        select : {
-            id: true,
-            title: true,
-            description: true,
-            location: true,
-            salaryMin: true,
-            salaryMax: true,
-            currency: true,
-            status: true,
-            companyId: true,
-            authorId: true,
-            createdAt: true,
-            updatedAt: true
+export const getAllJobs = async (page = 1, limit = 10) => {
+  const skip = (page - 1) * limit;
 
+  const jobs = await prisma.jobOffer.findMany({
+    skip: skip,
+    take: limit,
+    orderBy: {
+      createdAt: "desc"
+    }
+  });
 
-        }
-    });
+  const totalJobs = await prisma.jobOffer.count();
 
+  const totalPages = Math.ceil(totalJobs / limit);
+
+  return {
+    jobs,
+    pagination: {
+      page,
+      limit,
+      totalJobs,
+      totalPages
+    }
+  };
 };
 export const getJobById =async (id) =>{
     return await prisma.jobOffer.findUnique({

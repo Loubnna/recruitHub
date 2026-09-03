@@ -1,9 +1,9 @@
 import express from "express";
-import * as companyController from "./company.controller.js";
+import * as companyController from "./companie.controller.js";
 import { authenticate } from "../../middleware/auth.middleware.js";
 import { authorize } from "../../middleware/role.middleware.js";
 import { validate } from "../../middleware/validate.middleware.js";
-import { createCompanySchema, updateCompanySchema } from "./company.validation.js";
+import { createCompanySchema, updateCompanySchema } from "./company.vaidation.js.js";
 
 const router = express.Router();
 

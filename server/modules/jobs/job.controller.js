@@ -23,20 +23,21 @@ export const create  = async (req, res )=> {
 
 
 
-export const getAll =async (req, res) =>{
-    try{
-        const jobs = await jobService.getAllJobs();
-        return res.status(200).json(jobs);
+export const getAll = async (req, res) => {
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
 
-    }catch(error){
-        console.error(error);
-        return res.status(500 ).json({
-            message : "Failed to fetch jobs "
+    const result = await jobService.getAllJobs(page, limit);
 
-        });
+    res.status(200).json(result);
 
-    }
-}
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to get jobs"
+    });
+  }
+};
 export const getById =async (req , res ) =>{
     try{
         const id =Number(req.params.id);

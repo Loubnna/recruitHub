@@ -1,5 +1,5 @@
-import * as companyService from "./company.service.js";
-import { createCompanySchema, updateCompanySchema } from "./company.validation.js";
+import * as companyService from "./companie.services.js";
+import { createCompanySchema, updateCompanySchema } from "./company.vaidation.js.js";
 
 export const create = async (req, res) => {
     try {
