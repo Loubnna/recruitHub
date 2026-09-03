@@ -48,11 +48,28 @@ export const createCompany = async ({ name, description, location, website }, us
     return newCompany;
 };
 
-export const getAllCompanies = async () => {
-    return await prisma.company.findMany({
-        select: companySelect
+export const getAllCompanies = async (page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
+    const companies =await prisma.company.findMany({
+          skip: skip,
+          take: limit,
+          orderBy: {
+           createdAt: "desc"
+    }
     });
+    const totalCompanies= await prisma.company.count();
+    const totalPages =  Math.ceil(totalCompanies / limit);
+    return {
+    companies,
+    pagination: {
+      page,
+      limit,
+      totalCompanies,
+      totalPages
+    }
+  };
 };
+    
 
 export const getCompanyById = async (id) => {
     return await prisma.company.findUnique({

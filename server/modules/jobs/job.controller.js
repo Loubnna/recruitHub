@@ -33,10 +33,11 @@ export const getAll = async (req, res) => {
     res.status(200).json(result);
 
   } catch (error) {
-    res.status(500).json({
-      message: "Failed to get jobs"
-    });
-  }
+        console.error(error);
+        return res.status(500).json({
+            message: "failed to fetch jobs"
+        });
+    }
 };
 export const getById =async (req , res ) =>{
     try{
@@ -57,9 +58,11 @@ export const getById =async (req , res ) =>{
             job
         });
 
-    }catch (error){
+    }catch (error) {
         console.error(error);
-        res.status(500).json({message : "failed to fetch job"})
+        return res.status(500).json({
+            message: "failed to fetch jobs"
+        });
     }
 }
 
@@ -91,9 +94,8 @@ export const update = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-
         return res.status(500).json({
-            message: "Failed to update job"
+            message: "failed to update job"
         });
     }
 };
@@ -119,9 +121,8 @@ export const deleteJob = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-
         return res.status(500).json({
-            message: "Failed to delete the job"
+            message: "failed to delete the job"
         });
     }
 };
