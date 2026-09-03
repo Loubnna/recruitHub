@@ -1,5 +1,5 @@
 import prisma from "../../config/database.js";
-import z from "zod";
+import AppError from "../../utils/appError.js"
 
 
 export const createJob = async ({title, description ,location ,salaryMin,salaryMax, currency , companyId,authorId}) =>{
@@ -72,7 +72,7 @@ export const updateJob = async (id, data, user) => {
     });
 
     if (!job) {
-        const error = new Error("Job not found");        throw error;
+        throw new AppError("Job not found", 404);        throw error;
     }
 
     // Admin can update any job

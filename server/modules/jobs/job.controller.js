@@ -59,10 +59,8 @@ export const getById =async (req , res ) =>{
         });
 
     }catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            message: "failed to fetch jobs"
-        });
+
+        next(error);
     }
 }
 
