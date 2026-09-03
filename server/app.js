@@ -1,4 +1,5 @@
 import express from "express"
+import { generalLimiter } from "./middleware/rateLimiter.js";
 import cookieParser from "cookie-parser"
 import authRoutes from "./modules/auth/auth.routes.js";
 import jobRoutes from "./modules/jobs/job.routes.js";
@@ -8,6 +9,8 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(generalLimiter);
+
 //api v1 
 app.use("/api/v1/auth" , authRoutes);
 app.use("/api/v1/jobs", jobRoutes);

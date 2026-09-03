@@ -13,6 +13,7 @@ router.post(
 
 router.post(
     "/login",
+    authLimiter,
     validate(loginSchema),
     authController.login
 );
