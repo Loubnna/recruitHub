@@ -8,6 +8,11 @@ import applicationRoutes from "./modules/applications/application.routes.js";
 import { errorHandler  } from "./middleware/errorMiddleware.js";
 import cors from "cors";
 const app = express();
+app.use(cors({
+    origin:  "http://localhost:3000" ,
+    credentials:true
+
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(generalLimiter);
@@ -16,7 +21,7 @@ app.use(generalLimiter);
 app.use("/api/v1/auth" , authRoutes);
 app.use("/api/v1/jobs", jobRoutes);
 app.use("/api/v1/applications" , applicationRoutes);
-app.use ("api/v1/companies" , companyRoutes);
+app.use ("/api/v1/companies" , companyRoutes);
 //Errir handling 
 app.use(errorHandler);
 
@@ -25,12 +30,6 @@ app.get("/" , (req,res) => {
         message : "the recuitHub platforme api"
     });
 });
-app.use(cors({
-    origin:  "http://localhost:3000" ,
-    credentials:true
-
-}));
-app.use(cookieParser());
 
 
 export default app;
