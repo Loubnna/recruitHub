@@ -1,7 +1,7 @@
 import prisma from "../../config/database.js";
 import AppError from "../../utils/appError.js";
 
-export const createResume = async ({
+export const uploadResume = async ({
     userId,
     fileName,
     fileKey,
