@@ -57,3 +57,16 @@ export const updateResume = async ({
 
     return updatedResume;
 };
+export const getResumeByUserId = async (userId) => {
+    const resume = await prisma.resume.findUnique({ where: { userId } });
+    if (!resume) throw new AppError("Resume not found", 404);
+    return resume;
+};
+
+export const deleteResume = async (userId) => {
+    const resume = await prisma.resume.findUnique({ where: { userId } });
+    if (!resume) throw new AppError("Resume not found", 404);
+
+    await prisma.resume.delete({ where: { userId } });
+    return resume;
+};
