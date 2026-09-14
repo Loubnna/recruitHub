@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 import authRoutes from "./modules/auth/auth.routes.js";
 import jobRoutes from "./modules/jobs/job.routes.js";
 import companyRoutes from "./modules/companies/companie.router.js"
+import resumeRouter from "./modules/resumes/resume.router.js";
 import applicationRoutes from "./modules/applications/application.routes.js";
 import { errorHandler  } from "./middleware/errorMiddleware.js";
 import cors from "cors";
@@ -22,7 +23,8 @@ app.use("/api/v1/auth" , authRoutes);
 app.use("/api/v1/jobs", jobRoutes);
 app.use("/api/v1/applications" , applicationRoutes);
 app.use ("/api/v1/companies" , companyRoutes);
-//Errir handling 
+app.use("api/v1/resumies" , resumeRouter);
+//Error  handling 
 app.use(errorHandler);
 
 app.get("/" , (req,res) => {

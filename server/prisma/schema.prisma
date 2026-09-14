@@ -1,12 +1,14 @@
 generator client {
+
   provider = "prisma-client-js"
+
 }
 
 datasource db {
+
   provider = "postgresql"
+
 }
-
-
 enum Role {
   CANDIDATE
   RECRUITER
@@ -27,95 +29,128 @@ enum JobStatus {
   CLOSED
   ARCHIVED
 }
+
+enum InterviewStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
 model User {
-  id            Int           @id @default(autoincrement())
-  email         String        @unique
-  password      String
-  name          String?
-  role          Role          @default(CANDIDATE)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  password     String
+  name         String?
+  role         Role          @default(CANDIDATE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
-  profile       Profile?
-  applications  Application[]
+  profile      Profile?
+  resume       Resume?
 
-  companyId     Int?
-  company       Company?      @relation(fields: [companyId], references: [id])
+  applications Application[]
 
-  jobOffers     JobOffer[]
+  companyId    Int?
+  company      Company?      @relation(fields: [companyId], references: [id])
 
-  resume        Resume?
+  jobOffers    JobOffer[]
+
+  interviews   Interview[]   @relation("interviewerInterviews")
 }
 
 model Resume {
-  id            Int           @id @default(autoincrement())
-  userId        Int           @unique
-  fileName      String
-  fileKey       String
-  fileSize      Int
-  mimeType      String
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id           Int           @id @default(autoincrement())
+  userId       Int           @unique
+  fileName     String
+  fileKey      String
+  fileSize     Int
+  mimeType     String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  applications  Application[]
-}
-
-model Profile {
-  id        Int     @id @default(autoincrement())
-  bio       String?
-  headline  String?
-  resumeUrl String?
-  userId    Int     @unique
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Company {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String?
-  website     String?
-  location    String?
-  createdAt   DateTime   @default(now())
-  
-  recruiters  User[]
-  jobOffers   JobOffer[]
-}
-
-model JobOffer {
-  id          Int        @id @default(autoincrement())
-  title       String
-  description String
-  location    String?
-  salaryMin   Int?
-  salaryMax   Int?
-  currency    String?
-  status      JobStatus  @default(DRAFT)
-
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-
-  companyId   Int
-  company     Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
-
-  authorId    Int
-  author      User       @relation(fields: [authorId], references: [id])
-
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   applications Application[]
 }
 
-model Application {
-  id          Int               @id @default(autoincrement())
-  status      ApplicationStatus @default(PENDING)
-  createdAt   DateTime          @default(now())
-  
-  candidateId Int
-  candidate   User              @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+model Profile {
+  id           Int      @id @default(autoincrement())
+  bio          String?
+  headline     String?
+  resumeUrl    String?
+  userId       Int      @unique
 
-  jobOfferId  Int
-  jobOffer    JobOffer          @relation(fields: [jobOfferId], references: [id], onDelete: Cascade)
-   resumeId    Int?
-   resume      Resume?  @relation(fields: [resumeId], references: [id], onDelete: Cascade )
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Company {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  website      String?
+  location     String?
+  createdAt    DateTime   @default(now())
+
+  recruiters   User[]
+  jobOffers    JobOffer[]
+}
+
+model JobOffer {
+  id            Int           @id @default(autoincrement())
+  title         String
+  description   String
+  location      String?
+  salaryMin     Int?
+  salaryMax     Int?
+  currency      String?
+  status        JobStatus     @default(DRAFT)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  companyId     Int
+  company       Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  authorId      Int
+  author        User          @relation(fields: [authorId], references: [id])
+
+  applications  Application[]
+}
+
+model Application {
+  id            Int               @id @default(autoincrement())
+  status        ApplicationStatus  @default(PENDING)
+  createdAt     DateTime          @default(now())
+
+  candidateId   Int
+  candidate     User              @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  jobOfferId    Int
+  jobOffer      JobOffer          @relation(fields: [jobOfferId], references: [id], onDelete: Cascade)
+
+  resumeId      Int?
+  resume        Resume?           @relation(fields: [resumeId], references: [id])
+
+  interview     Interview?
 
   @@unique([candidateId, jobOfferId])
+}
+
+model Interview {
+  id             Int              @id @default(autoincrement())
+
+  applicationId  Int              @unique
+  application    Application      @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  interviewerId  Int
+  interviewer    User             @relation("interviewerInterviews", fields: [interviewerId],references: [id])
+
+  scheduledAt    DateTime
+  durationMins   Int              @default(30)
+  meetingLink    String?
+  location       String?
+  status         InterviewStatus  @default(SCHEDULED)
+  feedback       String?
+  rating         Int?
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }
