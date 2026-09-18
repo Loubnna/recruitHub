@@ -5,14 +5,16 @@ export const createInterviewSchema = z.object({
     scheduledAt: z.string().datetime(),
     durationMins: z.number().int().positive().optional(),
     meetingLink: z.string().url().optional(),
-    location: z.string().optional()
+    location: z.string().optional(),
+    interviewerId: z.number().int().positive().optional()
 });
+
 export const updateInterviewSchema = z.object({
     scheduledAt: z.string().datetime().optional(),
     durationMins: z.number().int().positive().optional(),
-    meetingLink: z.string().url().optional(),
-    location: z.string().optional(),
-    status: z.enum(["SCHEDULED", "COMPLETED", "CANCELLED", "NO_SHOW"]).optional()
+    meetingLink: z.string().url().nullable().optional(),
+    location: z.string().nullable().optional(),
+    status: z.enum(["SCHEDULED", "COMPLETED", "CANCELLED"]).optional()
 });
 
 export const feedbackSchema = z.object({
