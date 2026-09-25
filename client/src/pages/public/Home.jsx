@@ -1,5 +1,8 @@
 import { useState } from "react";
 import "../../app/App.css";
+import "../../services/jobs.service.js"
+import "../public/Jobs.jsx"
+
 
 const JOBS = [
   {

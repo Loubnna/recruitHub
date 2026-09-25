@@ -9,6 +9,8 @@ import applicationRoutes from "./modules/applications/application.routes.js";
 import interviewRoutes from "./modules/interviews/interview.routes.js";
 import { errorHandler  } from "./middleware/errorMiddleware.js";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swagger.js";
 const app = express();
 app.use(cors({
     origin:  "http://localhost:3000" ,
@@ -18,7 +20,12 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 app.use(generalLimiter);
-
+// swagger 
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec)
+)
 //api v1 
 app.use("/api/v1/auth" , authRoutes);
 app.use("/api/v1/jobs", jobRoutes);
